@@ -1,0 +1,12 @@
+//
+// Colours.
+// --------
+//
+@each $name, $col in $colours {
+	.tc-#{$name} { color: $col; }
+	.tc-#{$name}-h:hover { color: $col; }
+	.bc-#{$name} { background-color: $col; }
+	.bc-#{$name}-h:hover { background-color: $col; }
+}
+@mixin tc($n) { color: map_get($colours, $n); }
+@mixin bc($n) { background-color: map_get($colours, $n); }

@@ -1,0 +1,45 @@
+
+@mixin each_suffix_border($suffix) {
+  // Border colours.
+  $w: nth($border-width-list, 1);
+  $s: nth($border-style-list, 1);
+  @each $name, $col in $colours {
+    .bdr-t-#{$name}#{$suffix} { border-top: $s $w $col; }
+    .bdr-b-#{$name}#{$suffix} { border-bottom: $s $w $col; }
+    .bdr-v-#{$name}#{$suffix} { border-top: $s $w $col; border-bottom: $s $w $col; }
+    .bdr-r-#{$name}#{$suffix} { border-right: $s $w $col; }
+    .bdr-l-#{$name}#{$suffix} { border-left: $s $w $col; }
+    .bdr-h-#{$name}#{$suffix} { border-right: $s $w $col; border-left: $s $w $col; }
+    .bdr-a-#{$name}#{$suffix} { border: $s $w $col; }
+  }
+
+}
+@include each_suffix_border('');
+
+//
+// If configured to, create the above rules for suffixes like -s for small+
+//
+@if ($include_cumulative_breakpoints == "yes") {
+  @each $suffix, $breakpoint in $breakpoints_map {
+    @media screen and (min-width: $breakpoint) { @include each_suffix("-#{$suffix}"); }
+  }
+}
+
+//
+// If configured to, create the above rules for suffixes like -so for small up to medium.
+//
+@if ($include_specific_breakpoints == "yes") {
+
+  $breakpoint_suffixes: ();
+  @each $k, $v in $breakpoints_map { $breakpoint_suffixes: append($breakpoint_suffixes, $k); }
+  $next_key_index: 2;
+  @each $k, $breakpoint in $breakpoints_map {
+    @if ($next_key_index <= length($keys)) {
+      $next_key: nth($keys, $next_key_index);
+      $next_breakpoint: map_get($breakpoints_map, $next_key);
+      $next_key_index: $next_key_index + 1;
+      @media screen and (min-width: $breakpoint ) and  ( max-width: ($next_breakpoint - 1)) { @include each_suffix("-#{$k}o"); }
+    }
+  }
+}
+

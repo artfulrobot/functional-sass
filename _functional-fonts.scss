@@ -1,0 +1,33 @@
+//
+// Font sizes.
+// -----------
+//
+@for $n from 1 through length($font-sizes) {
+  .fs-#{$n} { font-size: nth($font-sizes, $n); }
+}
+@for $n from 1 through length($line-heights) {
+  .lh-#{$n} { line-height: nth($line-heights, $n); }
+}
+
+// Combined font size and line height.
+@each $i, $set in $sizes-map  {
+  .fsl-#{$i} {
+    font-size:   nth($font-sizes,   nth($set, 1));
+    line-height: nth($line-heights, nth($set, 2));
+  }
+}
+// ... and a mixin.
+@mixin fsl($n) { font-size: nth($font-sizes, $n); line-height: nth($line-heights, $n);  }
+
+// Font families.
+@each $n, $_ in $font_families_map {
+  .ff-#{$n} { font-family: $_; }
+}
+
+// Font weights.
+@each $n, $_ in $font_weights_map {
+  .fw-#{$n} { font-weight: $_; }
+}
+// ... and a mixin.
+@mixin fw($n) { font-weight: map_get($font-weights-map, $n); }
+

@@ -1,0 +1,111 @@
+//
+// Configuration
+// =============
+//
+// Create a copy of this and edit it for your project.
+//
+
+// Breakpoints. Minimum width to qualify... (these are stolen from bootstrap)
+$breakpoints_map: (
+  s: 576px,
+  m: 768px,
+  l: 992px,
+  w: 1200px,
+);
+$include_cumulative_breakpoints: yes;
+$include_specific_breakpoints: no;
+
+// Core
+// ----
+
+//
+// Margins, paddings.
+//
+$spacings_map: (
+  1: 0.25rem,
+  2: 0.5rem,
+  3: 1rem,
+  4: 2rem,
+  5: 4rem,
+);
+
+//
+// Box shadows
+//
+$box-shadows-list: (
+  unquote("0 0 1rem rgba(0,0,0,0.2)")
+);
+//
+// Text shadows
+//
+$text-shadows-list: (
+  unquote("-1px 1px 2px rgba(0,0,0,0.8)")
+);
+//
+// Border radii
+//
+$border-radius-list: ( 3px 6px );
+
+
+// Other
+// -----
+
+// Colours
+$colours: (
+  bk: black,
+  g1: #222,
+  g2: #444,
+  g3: #666,
+  g4: #aaa,
+  g5: #bbb,
+  g7: #e8e8e8,
+  g8: #f0f0f0,
+  g9: #f8f8f8,
+  wt: white,
+);
+
+// Link sets Colours
+// :link [:hover [:active [:visited]]]
+$link-colours: (
+  bk: ('bk', 'g1'),
+);
+
+//
+// Font sizes and line heights.
+//
+//                1     2          3 (norm)     4          5       6
+$font-sizes: (10rem/16) (14rem/16) (1rem) (24rem/16) (32rem/16) (40rem/16);
+$line-heights: 1        1.2        1.4    1.2        1.2        1.2;
+$sizes-map: (
+  1: ( 1, 1 ),
+  2: ( 2, 2 ),
+  3: ( 3, 3 ),
+  4: ( 4, 4 ),
+  5: ( 5, 5 ),
+  6: ( 6, 6 ),
+);
+
+
+//
+// Font families.
+//
+$font_families_map: (
+  muli: ('Muli', sans-serif),
+  cabin: ('Cabin', sans-serif),
+  rubik: ('Rubik', sans-serif),
+  work: ('Work Sans', sans-serif),
+);
+
+//
+// Font weights.
+//
+$font_weights_map: (
+  3: 300,
+  4: 400,
+  5: 500,
+  6: 600,
+  7: 700,
+);
+
+$border-width-list: ( 1px );
+$border-style-list: ( solid );
