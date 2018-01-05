@@ -1,13 +1,52 @@
 // This is the core stuff.
 
+@if ($build-mode == 'all') {
+  @debug "
+  Build mode all: every combination will be created - massive CSS file. Consider dev";
+}
+@if ($build-mode == 'dev') {
+  @debug "
+  Build mode dev: every combination will be created but classes not listed in $classes-in-use will add a :before warning element";
+}
+@if ($build-mode == 'prod') {
+  @debug "
+  Build mode prod: only building classes listed in $classes-in-use";
+}
+
+@mixin if-required($class) {
+
+  @if ($build-mode == 'all') {
+    // Include everything.
+    .#{$class} { @content; }
+  }
+  @else {
+    // only include classes explicitly listed in $classes-in-use
+    @if (index($classes-in-use, $class)) {
+      @debug "#{$class} is required";
+      .#{$class} { @content; }
+    }
+    @if ($build-mode == 'dev') {
+      .#{$class}:before {
+        background-color: red;
+        color:white;
+        padding:4px;
+        display:absolute;
+        z-index:100;
+        content:"#{$class} not defined.";
+      }
+    }
+  }
+}
+
 // Mixin to create rules for padding and margins.
 @mixin padmar($n, $key, $suffix, $prop, $length) {
-  .#{$key}l#{$n}#{$suffix} { #{$prop}-left: $length; }
-  .#{$key}r#{$n}#{$suffix} { #{$prop}-right: $length; }
-  .#{$key}t#{$n}#{$suffix} { #{$prop}-top: $length; }
-  .#{$key}b#{$n}#{$suffix} { #{$prop}-bottom: $length; }
-  .#{$key}h#{$n}#{$suffix} { #{$prop}-left: $length;  #{$prop}-right: $length; }
-  .#{$key}v#{$n}#{$suffix} { #{$prop}-top: $length;  #{$prop}-bottom: $length; }
+
+  @include if-required(#{$key}l#{$n}#{$suffix}) { #{$prop}-left: $length; };
+  @include if-required(#{$key}r#{$n}#{$suffix}) { #{$prop}-right: $length; };
+  @include if-required(#{$key}t#{$n}#{$suffix}) { #{$prop}-top: $length; };
+  @include if-required(#{$key}b#{$n}#{$suffix}) { #{$prop}-bottom: $length; };
+  @include if-required(#{$key}h#{$n}#{$suffix}) { #{$prop}-left: $length;  #{$prop}-right: $length; };
+  @include if-required(#{$key}v#{$n}#{$suffix}) { #{$prop}-top: $length;  #{$prop}-bottom: $length; };
 }
 //
 // Offer these with breakpoint suffixes
@@ -25,76 +64,76 @@
     @include padmar($n, 'p', $suffix, 'padding', $length);
 
     // Negative horizontal k:w margins.
-    .ml-#{$n}#{$suffix} { margin-left: -$length; }
-    .mr-#{$n}#{$suffix} { margin-right: -$length; }
-    .mh-#{$n}#{$suffix} { margin-left: -$length;  margin-right: -$length; }
+    @include if-required(ml-#{$n}#{$suffix}) { margin-left: -$length; };
+    @include if-required(mr-#{$n}#{$suffix}) { margin-right: -$length; };
+    @include if-required(mh-#{$n}#{$suffix}) { margin-left: -$length;  margin-right: -$length; };
   }
 
   //
   // Displays
   // --------
   //
-  .db#{$suffix} { display:block; }
-  .di#{$suffix} { display:inline; }
-  .dib#{$suffix} { display:inline-block; }
-  .df#{$suffix} { display: flex; }
-  .dn#{$suffix} { display: none; }
+  @include if-required(db#{$suffix}) { display:block; };
+  @include if-required(di#{$suffix}) { display:inline; };
+  @include if-required(dib#{$suffix}) { display:inline-block; };
+  @include if-required(df#{$suffix}) { display: flex; };
+  @include if-required(dn#{$suffix}) { display: none; };
 
   //
   // Flexbox.
   // --------
   //
-  .fw-w#{$suffix} { flex-wrap: wrap; }
-  .fw-n#{$suffix} { flex-wrap: nowrap; }
-  .fi-2#{$suffix} { flex: 0 0 50%; }
-  .fi-3#{$suffix} { flex: 0 0 33.333%; }
-  .fi-a#{$suffix} { flex: 0 0 auto; }
-  .fi-ags#{$suffix} { flex: 1 1 auto; }
+  @include if-required(fw-w#{$suffix}) { flex-wrap: wrap; };
+  @include if-required(fw-n#{$suffix}) { flex-wrap: nowrap; };
+  @include if-required(fi-2#{$suffix}) { flex: 0 0 50%; };
+  @include if-required(fi-3#{$suffix}) { flex: 0 0 33.333%; };
+  @include if-required(fi-a#{$suffix}) { flex: 0 0 auto; };
+  @include if-required(fi-ags#{$suffix}) { flex: 1 1 auto; };
 
-  .fi-ag#{$suffix} { flex: 1 0 auto; }
-  .fi-as#{$suffix} { flex: 0 1 auto; }
+  @include if-required(fi-ag#{$suffix}) { flex: 1 0 auto; };
+  @include if-required(fi-as#{$suffix}) { flex: 0 1 auto; };
 
-  .fjc-end#{$suffix} { justify-content: flex-end; }
-  .fjc-start#{$suffix} { justify-content: flex-start; }
-  .fjc-centre#{$suffix} { justify-content: center; }
-  .fjc-sb#{$suffix} { justify-content: space-between ; }
-  .fjc-sa#{$suffix} { justify-content: space-around ; }
+  @include if-required(fjc-end#{$suffix}) { justify-content: flex-end; };
+  @include if-required(fjc-start#{$suffix}) { justify-content: flex-start; };
+  @include if-required(fjc-centre#{$suffix}) { justify-content: center; };
+  @include if-required(fjc-sb#{$suffix}) { justify-content: space-between ; };
+  @include if-required(fjc-sa#{$suffix}) { justify-content: space-around ; };
 
-  .fai-end#{$suffix} { align-items: flex-end; }
-  .fai-start#{$suffix} { align-items: flex-start; }
-  .fai-centre#{$suffix} { align-items: center; }
+  @include if-required(fai-end#{$suffix}) { align-items: flex-end; };
+  @include if-required(fai-start#{$suffix}) { align-items: flex-start; };
+  @include if-required(fai-centre#{$suffix}) { align-items: center; };
 
-  .fd-col#{$suffix} { flex-direction: column; }
+  @include if-required(fd-col#{$suffix}) { flex-direction: column; };
 
   @for $n from 1 through 12 {
-    .fo-#{$n}#{$suffix} { order: $n; }
+    @include if-required(fo-#{$n}#{$suffix}) { order: $n; };
   }
 
 
   //
   // Position
   //
-  .pos-r#{$suffix} { position: relative; }
-  .pos-a#{$suffix} { position: absolute; }
-  .pos-f#{$suffix} { position: fixed; }
-  .pos-s#{$suffix} { position: static; }
-  .top0#{$suffix}  { top: 0; }
-  .bot0#{$suffix}  { bottom: 0; }
-  .left0#{$suffix} { left: 0; }
-  .right0#{$suffix}{ right: 0; }
+  @include if-required(pos-r#{$suffix}) { position: relative; };
+  @include if-required(pos-a#{$suffix}) { position: absolute; };
+  @include if-required(pos-f#{$suffix}) { position: fixed; };
+  @include if-required(pos-s#{$suffix}) { position: static; };
+  @include if-required(top0#{$suffix})  { top: 0; };
+  @include if-required(bot0#{$suffix})  { bottom: 0; };
+  @include if-required(left0#{$suffix}) { left: 0; };
+  @include if-required(right0#{$suffix}) { right: 0; };
 
   // Border radii
   @for $n from 1 through length($border-radius-list) {
-    .bdrr-#{$n} { border-radius: nth($border-radius-list, $n); }
+    @include if-required(bdrr-#{$n}) { border-radius: nth($border-radius-list, $n); };
   }
 
   //
   // Text alignment.
   // ---------------
   //
-  .centre#{$suffix} { text-align: center; }
-  .right#{$suffix} { text-align: right; }
-  .left#{$suffix} { text-align: left; }
+  @include if-required(centre#{$suffix}) { text-align: center; };
+  @include if-required(right#{$suffix}) { text-align: right; };
+  @include if-required(left#{$suffix}) { text-align: left; };
 }
 @include each_suffix('');
 

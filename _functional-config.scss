@@ -109,3 +109,13 @@ $font_weights_map: (
 
 $border-width-list: ( 1px );
 $border-style-list: ( solid );
+
+$classes-in-use: (
+  mh-3
+  pl5-w
+);
+$build-mode: 'all'; // Build all styles.
+$build-mode: 'dev'; // Build all styles, plus warnings.
+$build-mode: 'prod'; // Build only styles required.
+
+$build-mode: 'dev'; // Build all styles, plus warnings.
