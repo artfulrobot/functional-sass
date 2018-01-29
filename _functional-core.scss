@@ -13,6 +13,9 @@
   Build mode prod: only building classes listed in $classes-in-use";
 }
 
+@if (not global_variable_exists(not-defined-errors)) {
+  $not-defined-errors: () !global;
+}
 @mixin if-required($class) {
 
   @if ($build-mode == 'all') {
@@ -21,18 +24,17 @@
   }
   @else {
     // only include classes explicitly listed in $classes-in-use
-    @if (index($classes-in-use, $class)) {
-      @debug "#{$class} is required";
+    @if (index($classes-in-use, $class) != null) {
+      // This class is required.
       .#{$class} { @content; }
     }
-    @if ($build-mode == 'dev') {
-      .#{$class}:before {
-        background-color: red;
-        color:white;
-        padding:4px;
-        display:absolute;
-        z-index:100;
-        content:"#{$class} not defined.";
+    @else {
+      // This class is NOT required.
+      @if ($build-mode == 'dev') {
+        // Dev mode: build class anyway, but slap on a fat warning.
+        .#{$class} { @content; }
+
+        $not-defined-errors: append($not-defined-errors, $class) !global;
       }
     }
   }
@@ -196,3 +198,32 @@
 .ov-a { overflow: auto; }
 .ov-h { overflow: hidden; }
 .ov-v { overflow: visible; }
+
+
+// Errors.
+@if (length($not-defined-errors) > 0) {
+  @keyframes functional-error {
+    0% { background-color: #400; }
+    10% { background-color: #c00; }
+    100% { background-color: #400; }
+  }
+  %not-defined-error {
+    background-color: #b11;
+    opacity:1;
+    animation: functional-error 0.5s linear infinite;
+    border:solid 1px white;
+    color:white;
+    padding:3px 8px;
+    border-radius:4px;
+    position:absolute;
+    z-index:100;
+    line-height:1;
+    font-size:(14rem/16);
+  }
+  @each $class in $not-defined-errors {
+    .#{$class}:before {
+      content:"#{$class} not defined.";
+      @extend %not-defined-error;
+    }
+  }
+}
