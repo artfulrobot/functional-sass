@@ -2,15 +2,18 @@
 
 @if ($build-mode == 'all') {
   @debug "
-  Build mode all: every combination will be created - massive CSS file. Consider dev";
+  → Build mode all: every combination will be created
+  → Massive CSS file. Consider dev";
 }
 @if ($build-mode == 'dev') {
   @debug "
-  Build mode dev: every combination will be created but classes not listed in $classes-in-use will add a :before warning element";
+  → Build mode dev: every combination will be created
+  → but classes not listed in $classes-in-use
+  → will add a :before warning element";
 }
 @if ($build-mode == 'prod') {
   @debug "
-  Build mode prod: only building classes listed in $classes-in-use";
+  → Build mode prod: only building classes listed in $classes-in-use";
 }
 
 @if (not global_variable_exists(not-defined-errors)) {

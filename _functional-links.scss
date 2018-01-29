@@ -2,7 +2,24 @@
 // Link sets.
 // ----------
 //
+// Define mixin to be applied to a link.
+@mixin apply-link-set($setname) {
+  $cols: map_get($link-colours, $setname);
+
+  $_hover:   map_get($colours, nth($cols, 1));
+  $_active:  map_get($colours, nth($cols, 1));
+  $_visited: map_get($colours, nth($cols, 1));
+  @if length($cols) > 1 { $_hover:   map_get($colours, nth($cols, 2)); }
+  @if length($cols) > 2 { $_active:  map_get($colours, nth($cols, 3)); }
+  @if length($cols) > 3 { $_visited: map_get($colours, nth($cols, 4)); }
+
+  &:visited { color: $_visited; }
+  &:link    { color: map_get($colours, nth($cols, 1)); }
+  &:hover   { color: $_hover; }
+  &:active  { color: $_active; }
+}
 @each $name, $cols in $link-colours {
+
   $_hover:   map_get($colours, nth($cols, 1));
   $_active:  map_get($colours, nth($cols, 1));
   $_visited: map_get($colours, nth($cols, 1));
@@ -11,10 +28,9 @@
   @if length($cols) > 3 { $_visited: map_get($colours, nth($cols, 4)); }
 
   // Define classes that can be applied to a link:
-  .aa-#{$name}:visited { color: $_visited; }
-  .aa-#{$name}:link    { color: map_get($colours, nth($cols, 1)); }
-  .aa-#{$name}:hover   { color: $_hover; }
-  .aa-#{$name}:active  { color: $_active; }
+  .aa-#{$name} {
+    @include apply-link-set($name);
+  }
 
   // Also define classes that affect links of all child elements.
   .ac-#{$name} a:not(.aa):visited { color: $_visited; }
@@ -22,3 +38,4 @@
   .ac-#{$name} a:not(.aa):hover   { color: $_hover; }
   .ac-#{$name} a:not(.aa):active  { color: $_active; }
 }
+
