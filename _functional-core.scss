@@ -64,6 +64,8 @@
   //
   @include padmar(0, 'm', $suffix, 'margin', 0);
   @include padmar(0, 'p', $suffix, 'padding', 0);
+  @include padmar('a', 'm', $suffix, 'margin', auto);
+  @include padmar('a', 'p', $suffix, 'padding', auto);
   @each $n, $length in $spacings_map {
     @include padmar($n, 'm', $suffix, 'margin', $length);
     @include padmar($n, 'p', $suffix, 'padding', $length);
@@ -107,6 +109,7 @@
   @include if-required(fai-end#{$suffix}) { align-items: flex-end; };
   @include if-required(fai-start#{$suffix}) { align-items: flex-start; };
   @include if-required(fai-centre#{$suffix}) { align-items: center; };
+  @include if-required(fai-stretch#{$suffix}) { align-items: stretch; };
 
   @include if-required(fd-col#{$suffix}) { flex-direction: column; };
 

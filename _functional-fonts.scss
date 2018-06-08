@@ -17,7 +17,10 @@
   }
 }
 // ... and a mixin.
-@mixin fsl($n) { font-size: nth($font-sizes, $n); line-height: nth($line-heights, $n);  }
+@mixin fsl($i) {
+  $set: map_get($sizes-map, $i);
+  font-size: nth($font-sizes, nth($set, 1)); line-height: nth($line-heights, nth($set, 2));
+}
 
 // Font families.
 @each $n, $_ in $font_families_map {
